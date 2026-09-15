@@ -4,7 +4,12 @@ import vertexShader from "./shaders/vertexShader.glsl";
 import fragmentShader from "./shaders/fragmentShader.glsl";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
+import { SplitText } from "gsap/SplitText";
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+/* =========================================================
+   WEBGL
+   ========================================================= */
 
 const canvas = document.getElementById("canvas");
 
@@ -51,6 +56,16 @@ function resize() {
 // fires on first observe and whenever the CSS size changes
 new ResizeObserver(resize).observe(canvas);
 
+/* -------- pointer parallax on the blob -------- */
+const pointer = { x: 0, y: 0 };
+const eased = { x: 0, y: 0 };
+
+window.addEventListener("pointermove", (e) => {
+	pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+	pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
+}, { passive: true });
+
+/* -------- hero scroll timeline -------- */
 var tl = gsap.timeline({
 	scrollTrigger: {
 		trigger: ".landing",
@@ -64,6 +79,16 @@ tl.to(sphere.position, {
 	y: 0,
 	z: -2.5,
 	ease: "power2.inOut",
+}, "a")
+.to(sphere.scale, {
+	x: 1.25,
+	y: 1.25,
+	z: 1.25,
+	ease: "power2.inOut",
+}, "a")
+.to(sphere.rotation, {
+	z: Math.PI * 0.4,
+	ease: "none",
 }, "a")
 .to(material.uniforms.uColorChange, {
 	value: 1,
@@ -81,9 +106,267 @@ function animate() {
 	requestAnimationFrame(animate);
 
 	timer.update();
-	material.uniforms.uTime.value = timer.getElapsed();
+	const t = timer.getElapsed();
+	material.uniforms.uTime.value = t;
+
+	// ease the pointer so the blob lags behind the cursor
+	eased.x += (pointer.x - eased.x) * 0.045;
+	eased.y += (pointer.y - eased.y) * 0.045;
+
+	sphere.position.x = eased.x * 0.4;
+	sphere.rotation.y = t * 0.06 + eased.x * 0.35;
+	sphere.rotation.x = eased.y * 0.25;
 
 	renderer.render(scene, camera);
 }
 
 animate();
+
+/* =========================================================
+   PAGE ANIMATIONS
+   Everything below is gated behind prefers-reduced-motion,
+   so the page renders fully static for anyone who opts out.
+   ========================================================= */
+
+const mm = gsap.matchMedia();
+
+mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+	/* -------- scroll progress bar -------- */
+	gsap.to(".scroll-progress", {
+		scaleX: 1,
+		ease: "none",
+		scrollTrigger: { start: 0, end: "max", scrub: 0.3 },
+	});
+
+	/* -------- nav: condense on scroll, hide going down -------- */
+	const nav = document.querySelector("nav");
+
+	let navDirection = 0;
+
+	ScrollTrigger.create({
+		start: "top -120",
+		end: "max",
+		onUpdate: (self) => {
+			// only retween when the scroll direction actually flips
+			if (self.direction === navDirection) return;
+			navDirection = self.direction;
+
+			gsap.to(nav, {
+				yPercent: self.direction === 1 ? -130 : 0,
+				duration: 0.45,
+				ease: "power2.out",
+				overwrite: "auto",
+			});
+		},
+		onEnter: () => gsap.to(nav, {
+			paddingTop: "1.1rem",
+			paddingBottom: "1.1rem",
+			backgroundColor: "rgba(255,255,255,0.72)",
+			backdropFilter: "blur(14px)",
+			borderBottomColor: "rgba(0,0,0,0.08)",
+			duration: 0.5,
+			ease: "power2.out",
+		}),
+		onLeaveBack: () => gsap.to(nav, {
+			paddingTop: "2.5rem",
+			paddingBottom: "2.5rem",
+			backgroundColor: "rgba(255,255,255,0)",
+			backdropFilter: "blur(0px)",
+			borderBottomColor: "rgba(0,0,0,0)",
+			duration: 0.5,
+			ease: "power2.out",
+		}),
+	});
+
+	/* -------- intro: nav + hero headline -------- */
+	const heroSplit = new SplitText(".landing h1", { type: "chars" });
+
+	gsap.timeline({ defaults: { ease: "power3.out" } })
+		.from("nav h1", { yPercent: -160, opacity: 0, duration: 0.9 })
+		.from("nav a", { yPercent: -160, opacity: 0, duration: 0.8, stagger: 0.07 }, "<0.08")
+		.from(heroSplit.chars, {
+			yPercent: 110,
+			opacity: 0,
+			rotateX: -75,
+			transformOrigin: "50% 100%",
+			duration: 1,
+			stagger: 0.022,
+		}, "<0.1");
+
+	/* -------- generic scroll reveals -------- */
+	const batchReveal = (selector, { y = 44, stagger = 0.09, start = "top 86%" } = {}) => {
+		const items = gsap.utils.toArray(selector);
+		if (!items.length) return;
+
+		gsap.set(items, { y, opacity: 0 });
+
+		ScrollTrigger.batch(items, {
+			start,
+			once: true,
+			onEnter: (batch) => gsap.to(batch, {
+				y: 0,
+				opacity: 1,
+				duration: 1,
+				ease: "power3.out",
+				stagger,
+				overwrite: true,
+			}),
+		});
+	};
+
+	batchReveal("section span.uppercase", { y: 20, stagger: 0 });
+	batchReveal("section article", { y: 60, stagger: 0.12 });
+	batchReveal(".work-row", { y: 50, stagger: 0.1 });
+	batchReveal(".process-grid > div", { y: 50, stagger: 0.1 });
+	batchReveal(".stat-grid > div", { y: 40, stagger: 0.1 });
+	batchReveal("footer nav, .footer-intro", { y: 40, stagger: 0.1 });
+
+	/* -------- line-by-line headline reveals -------- */
+	gsap.utils.toArray("#about h2, #about p, #contact h2, blockquote p").forEach((el) => {
+		const split = new SplitText(el, { type: "lines" });
+
+		gsap.from(split.lines, {
+			yPercent: 100,
+			opacity: 0,
+			duration: 1.1,
+			ease: "power4.out",
+			stagger: 0.07,
+			scrollTrigger: { trigger: el, start: "top 88%", once: true },
+		});
+	});
+
+	/* -------- stats count up -------- */
+	gsap.utils.toArray(".stat-num").forEach((el) => {
+		const raw = el.textContent.trim();
+		const target = parseFloat(raw);
+		if (Number.isNaN(target)) return;
+
+		const suffix = raw.replace(/^[\d.]+/, "");
+		const decimals = (raw.match(/\.(\d+)/) || ["", ""])[1].length;
+		const counter = { value: 0 };
+
+		gsap.to(counter, {
+			value: target,
+			duration: 2,
+			ease: "power2.out",
+			scrollTrigger: { trigger: el, start: "top 88%", once: true },
+			onUpdate: () => {
+				el.textContent = counter.value.toFixed(decimals) + suffix;
+			},
+		});
+	});
+
+	/* -------- marquee driven by scroll velocity -------- */
+	const marquee = document.querySelector(".marquee");
+
+	if (marquee) {
+		marquee.classList.add("marquee--js");
+
+		const loop = gsap.to(".marquee__track", {
+			xPercent: -100,
+			repeat: -1,
+			duration: 24,
+			ease: "none",
+		});
+
+		let settle;
+
+		ScrollTrigger.create({
+			start: 0,
+			end: "max",
+			onUpdate: (self) => {
+				const velocity = self.getVelocity();
+				const boost = gsap.utils.clamp(1, 7, 1 + Math.abs(velocity) / 700);
+
+				gsap.to(loop, {
+					timeScale: boost * self.direction,
+					duration: 0.35,
+					overwrite: true,
+				});
+				gsap.to(".marquee__item", {
+					skewX: gsap.utils.clamp(-16, 16, -velocity / 220),
+					duration: 0.4,
+					overwrite: true,
+				});
+
+				clearTimeout(settle);
+				settle = setTimeout(() => {
+					gsap.to(loop, { timeScale: 1, duration: 0.9, ease: "power2.out" });
+					gsap.to(".marquee__item", { skewX: 0, duration: 0.6, ease: "power2.out" });
+				}, 180);
+			},
+		});
+	}
+
+	/* -------- work rows dim their neighbours on hover -------- */
+	const rows = gsap.utils.toArray(".work-row");
+
+	rows.forEach((row) => {
+		row.addEventListener("pointerenter", () => {
+			gsap.to(rows.filter((r) => r !== row), { opacity: 0.3, duration: 0.4, overwrite: true });
+		});
+		row.addEventListener("pointerleave", () => {
+			gsap.to(rows, { opacity: 1, duration: 0.4, overwrite: true });
+		});
+	});
+
+	/* -------- footer wordmark parallax -------- */
+	gsap.from(".footer-wordmark", {
+		yPercent: 55,
+		opacity: 0,
+		ease: "none",
+		scrollTrigger: {
+			trigger: "footer",
+			start: "top 70%",
+			end: "bottom bottom",
+			scrub: 1,
+		},
+	});
+
+	/* -------- magnetic buttons -------- */
+	gsap.utils.toArray(".magnetic").forEach((el) => {
+		const xTo = gsap.quickTo(el, "x", { duration: 0.7, ease: "elastic.out(1, 0.4)" });
+		const yTo = gsap.quickTo(el, "y", { duration: 0.7, ease: "elastic.out(1, 0.4)" });
+
+		el.addEventListener("pointermove", (e) => {
+			const r = el.getBoundingClientRect();
+			xTo((e.clientX - r.left - r.width / 2) * 0.35);
+			yTo((e.clientY - r.top - r.height / 2) * 0.35);
+		});
+		el.addEventListener("pointerleave", () => {
+			xTo(0);
+			yTo(0);
+		});
+	});
+
+	/* -------- blend-mode cursor (fine pointers only) -------- */
+	const cursor = document.querySelector(".cursor");
+
+	if (cursor && window.matchMedia("(pointer: fine)").matches) {
+		gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+		const cx = gsap.quickTo(cursor, "x", { duration: 0.45, ease: "power3" });
+		const cy = gsap.quickTo(cursor, "y", { duration: 0.45, ease: "power3" });
+		let cursorReady = false;
+
+		window.addEventListener("pointermove", (e) => {
+			// first move: jump to the pointer instead of sliding in from 0,0
+			if (!cursorReady) {
+				cursorReady = true;
+				gsap.set(cursor, { x: e.clientX, y: e.clientY });
+				cursor.style.opacity = "1";
+			}
+			cx(e.clientX);
+			cy(e.clientY);
+		}, { passive: true });
+
+		document.querySelectorAll("a, button, input").forEach((el) => {
+			el.addEventListener("pointerenter", () => gsap.to(cursor, { scale: 3.4, duration: 0.35 }));
+			el.addEventListener("pointerleave", () => gsap.to(cursor, { scale: 1, duration: 0.35 }));
+		});
+	}
+
+	// SplitText measures text, so remeasure once webfonts land
+	document.fonts.ready.then(() => ScrollTrigger.refresh());
+});

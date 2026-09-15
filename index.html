@@ -11,6 +11,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
   <div class="w-full">
     <nav class="fixed top-0 left-0 z-50 w-full py-10 px-32 flex justify-between">
       <h1 class="text-4xl font-bold text-black">DevOPs3D</h1>
@@ -193,7 +195,7 @@
     <!-- ================= PROCESS ================= -->
     <section class="w-full px-6 md:px-16 lg:px-32 py-32 border-t border-black/10">
       <span class="text-black text-xs font-semibold tracking-[0.25em] uppercase">(04) &mdash; Process</span>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
+      <div class="process-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
         <div>
           <span class="block text-black text-sm tabular-nums">Step 01</span>
           <h3 class="text-black text-xl font-bold tracking-tight mt-4">Discover</h3>
@@ -227,21 +229,21 @@
 
     <!-- ================= STATS ================= -->
     <section class="w-full px-6 md:px-16 lg:px-32 py-24 border-t border-black/10">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-12">
+      <div class="stat-grid grid grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
-          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">60</span>
+          <span class="stat-num block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">60</span>
           <span class="block text-black text-sm mt-3">Frames per second, floor</span>
         </div>
         <div>
-          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">42</span>
+          <span class="stat-num block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">42</span>
           <span class="block text-black text-sm mt-3">Projects shipped</span>
         </div>
         <div>
-          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">11</span>
+          <span class="stat-num block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">11</span>
           <span class="block text-black text-sm mt-3">Countries served</span>
         </div>
         <div>
-          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">4.2s</span>
+          <span class="stat-num block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">4.2s</span>
           <span class="block text-black text-sm mt-3">Median deploy time</span>
         </div>
       </div>
@@ -266,7 +268,7 @@
         Got something<br>worth building?
       </h2>
       <a href="mailto:hello@devops3d.studio"
-         class="group inline-flex items-center gap-4 mt-12 border border-black rounded-full px-8 py-4 transition-colors duration-500 hover:bg-black hover:text-white">
+         class="magnetic group inline-flex items-center gap-4 mt-12 border border-black rounded-full px-8 py-4 transition-colors duration-500 hover:bg-black hover:text-white">
         <span class="text-base font-semibold tracking-tight">Start a project</span>
         <span class="text-lg inline-block transition-transform duration-500 group-hover:translate-x-1">&#8594;</span>
       </a>
@@ -277,7 +279,7 @@
 
       <div class="px-6 md:px-16 lg:px-32 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-y-12 gap-x-8">
 
-        <div class="col-span-2">
+        <div class="footer-intro col-span-2">
           <h3 class="text-black text-2xl font-bold tracking-tight">Stay in the loop</h3>
           <p class="text-black text-sm leading-relaxed mt-3 max-w-sm">
             One short letter a month &mdash; shader breakdowns, build notes, and the
