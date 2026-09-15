@@ -15,9 +15,9 @@
     <nav class="fixed top-0 left-0 z-50 w-full py-10 px-32 flex justify-between">
       <h1 class="text-4xl font-bold text-black">DevOPs3D</h1>
       <div class="flex gap-10">
-        <a href="#" class="text-black text-xl">Home</a>
-        <a href="#" class="text-black text-xl">About</a>
-        <a href="#" class="text-black text-xl">Contact</a>
+        <a href="#work" class="text-black text-xl">Home</a>
+        <a href="#about" class="text-black text-xl">About</a>
+        <a href="#contact" class="text-black text-xl">Contact</a>
 
       </div>
     </nav>
@@ -25,16 +25,320 @@
 
       <div class="sticky top-0 left-0 w-full h-screen">
 
-  
+
       <h1 class=" absolute top-1/2 left-1/2  -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-black text-7xl font-bold tracking-tighter">Design . Develope . Deploy</h1>
         <p class=" absolute top-1/2 left-1/2  -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none text-black text-2xl text-center tracking-tighter leading-loose">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum soluta maiores sed minima dolore exercitationem. Sapiente velit earum, rem ea doloribus quasi maxime recusandae culpa non repellendus minus aut tempore?</p>
-     
+
        <canvas class="absolute pointer-events-none top-0 left-0 block w-full h-screen z-[-1]" id="canvas"></canvas>
-   
+
       </div>
-     
+
     </div>
-    <div class="w-full h-screen bg-white"></div>
+
+    <!-- ================= MARQUEE ================= -->
+    <section class="w-full border-y border-black/10 py-6">
+      <div class="marquee w-full">
+        <div class="marquee__track">
+          <span class="marquee__item">Three.js</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">WebGL</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">GSAP</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">Shaders</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">GSAP</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">Next.js</span><span class="marquee__dot">&#9679;</span>
+        </div>
+        <div class="marquee__track" aria-hidden="true">
+          <span class="marquee__item">Three.js</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">WebGL</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">GSAP</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">Shaders</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">GSAP</span><span class="marquee__dot">&#9679;</span>
+          <span class="marquee__item">Next.js</span><span class="marquee__dot">&#9679;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="w-full px-6 md:px-16 lg:px-32 py-32">
+      <div class="flex flex-col lg:flex-row gap-16 lg:gap-24">
+        <div class="lg:w-1/3">
+          <span class="text-black text-xs font-semibold tracking-[0.25em] uppercase">(01) &mdash; About</span>
+        </div>
+        <div class="lg:w-2/3">
+          <h2 class="text-black text-4xl md:text-6xl font-bold tracking-tighter leading-[1.05]">
+            We build interfaces that feel like objects &mdash; not documents.
+          </h2>
+          <p class="text-black text-lg md:text-xl leading-relaxed mt-10 max-w-2xl">
+            DevOPs3D is a small studio working at the seam of real-time graphics and
+            production infrastructure. We prototype in shaders, ship on pipelines, and
+            treat performance as a design constraint rather than an afterthought.
+          </p>
+          <p class="text-black text-lg md:text-xl leading-relaxed mt-6 max-w-2xl">
+            Every surface you see here is rendered on the GPU, scrubbed against scroll
+            position, and deployed from the same commit that runs our tests.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="w-full px-6 md:px-16 lg:px-32 py-32 border-t border-black/10">
+      <span class="text-black text-xs font-semibold tracking-[0.25em] uppercase">(02) &mdash; Services</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/10 mt-16 border border-black/10">
+
+        <article class="bg-white p-10 lg:p-14 transition-colors duration-500 hover:bg-black/[0.03]">
+          <span class="block text-black text-6xl font-bold tracking-tighter">01</span>
+          <h3 class="text-black text-2xl font-bold tracking-tight mt-8">Design</h3>
+          <p class="text-black text-base leading-relaxed mt-4">
+            Art direction, motion studies and interface systems. We design in the browser
+            so the thing you approve is the thing that ships.
+          </p>
+          <ul class="mt-8 space-y-2">
+            <li class="text-black text-sm">&mdash; Design systems</li>
+            <li class="text-black text-sm">&mdash; Motion &amp; prototyping</li>
+            <li class="text-black text-sm">&mdash; Art direction</li>
+          </ul>
+        </article>
+
+        <article class="bg-white p-10 lg:p-14 transition-colors duration-500 hover:bg-black/[0.03]">
+          <span class="block text-black text-6xl font-bold tracking-tighter">02</span>
+          <h3 class="text-black text-2xl font-bold tracking-tight mt-8">Develope</h3>
+          <p class="text-black text-base leading-relaxed mt-4">
+            Typed, tested front-ends and the GPU work behind them. Custom GLSL, scroll
+            choreography, and the boring parts done well.
+          </p>
+          <ul class="mt-8 space-y-2">
+            <li class="text-black text-sm">&mdash; WebGL &amp; Three.js</li>
+            <li class="text-black text-sm">&mdash; Shader authoring</li>
+            <li class="text-black text-sm">&mdash; Accessibility</li>
+          </ul>
+        </article>
+
+        <article class="bg-white p-10 lg:p-14 transition-colors duration-500 hover:bg-black/[0.03]">
+          <span class="block text-black text-6xl font-bold tracking-tighter">03</span>
+          <h3 class="text-black text-2xl font-bold tracking-tight mt-8">Deploy</h3>
+          <p class="text-black text-base leading-relaxed mt-4">
+            Pipelines that make releases uneventful. Preview environments per branch,
+            budgets enforced in CI, rollbacks that actually work.
+          </p>
+          <ul class="mt-8 space-y-2">
+            <li class="text-black text-sm">&mdash; CI / CD</li>
+            <li class="text-black text-sm">&mdash; Edge &amp; CDN</li>
+            <li class="text-black text-sm">&mdash; Observability</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ================= WORK ================= -->
+    <section id="work" class="w-full px-6 md:px-16 lg:px-32 py-32 border-t border-black/10">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <span class="text-black text-xs font-semibold tracking-[0.25em] uppercase">(03) &mdash; Selected Work</span>
+        <span class="text-black text-sm">2021 &mdash; 2026</span>
+      </div>
+
+      <div class="mt-16 border-t border-black/10">
+
+        <a href="#" class="work-row group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-10 border-b border-black/10">
+          <div class="flex items-baseline gap-6">
+            <span class="text-black text-sm tabular-nums">001</span>
+            <h3 class="text-black text-3xl md:text-5xl font-bold tracking-tighter">Meridian Atlas</h3>
+          </div>
+          <div class="flex items-baseline gap-8">
+            <span class="text-black text-sm">Realtime globe</span>
+            <span class="text-black text-sm tabular-nums">2026</span>
+            <span class="text-black text-xl inline-block transition-transform duration-500 group-hover:translate-x-2">&#8594;</span>
+          </div>
+        </a>
+
+        <a href="#" class="work-row group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-10 border-b border-black/10">
+          <div class="flex items-baseline gap-6">
+            <span class="text-black text-sm tabular-nums">002</span>
+            <h3 class="text-black text-3xl md:text-5xl font-bold tracking-tighter">Halcyon Studio</h3>
+          </div>
+          <div class="flex items-baseline gap-8">
+            <span class="text-black text-sm">Brand &amp; site</span>
+            <span class="text-black text-sm tabular-nums">2025</span>
+            <span class="text-black text-xl inline-block transition-transform duration-500 group-hover:translate-x-2">&#8594;</span>
+          </div>
+        </a>
+
+        <a href="#" class="work-row group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-10 border-b border-black/10">
+          <div class="flex items-baseline gap-6">
+            <span class="text-black text-sm tabular-nums">003</span>
+            <h3 class="text-black text-3xl md:text-5xl font-bold tracking-tighter">Northwind Ops</h3>
+          </div>
+          <div class="flex items-baseline gap-8">
+            <span class="text-black text-sm">Dashboard</span>
+            <span class="text-black text-sm tabular-nums">2024</span>
+            <span class="text-black text-xl inline-block transition-transform duration-500 group-hover:translate-x-2">&#8594;</span>
+          </div>
+        </a>
+
+        <a href="#" class="work-row group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-10 border-b border-black/10">
+          <div class="flex items-baseline gap-6">
+            <span class="text-black text-sm tabular-nums">004</span>
+            <h3 class="text-black text-3xl md:text-5xl font-bold tracking-tighter">Palewater</h3>
+          </div>
+          <div class="flex items-baseline gap-8">
+            <span class="text-black text-sm">Shader toy</span>
+            <span class="text-black text-sm tabular-nums">2023</span>
+            <span class="text-black text-xl inline-block transition-transform duration-500 group-hover:translate-x-2">&#8594;</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ================= PROCESS ================= -->
+    <section class="w-full px-6 md:px-16 lg:px-32 py-32 border-t border-black/10">
+      <span class="text-black text-xs font-semibold tracking-[0.25em] uppercase">(04) &mdash; Process</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
+        <div>
+          <span class="block text-black text-sm tabular-nums">Step 01</span>
+          <h3 class="text-black text-xl font-bold tracking-tight mt-4">Discover</h3>
+          <p class="text-black text-sm leading-relaxed mt-3">
+            A week of questions. We map the constraints before anyone opens a design file.
+          </p>
+        </div>
+        <div>
+          <span class="block text-black text-sm tabular-nums">Step 02</span>
+          <h3 class="text-black text-xl font-bold tracking-tight mt-4">Prototype</h3>
+          <p class="text-black text-sm leading-relaxed mt-3">
+            Rough, running, and on a real device by Friday. Motion is judged in motion.
+          </p>
+        </div>
+        <div>
+          <span class="block text-black text-sm tabular-nums">Step 03</span>
+          <h3 class="text-black text-xl font-bold tracking-tight mt-4">Build</h3>
+          <p class="text-black text-sm leading-relaxed mt-3">
+            Two-week cycles, a preview URL per branch, and a performance budget in CI.
+          </p>
+        </div>
+        <div>
+          <span class="block text-black text-sm tabular-nums">Step 04</span>
+          <h3 class="text-black text-xl font-bold tracking-tight mt-4">Ship</h3>
+          <p class="text-black text-sm leading-relaxed mt-3">
+            Progressive rollout, dashboards you own, and a handover that outlives us.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <section class="w-full px-6 md:px-16 lg:px-32 py-24 border-t border-black/10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-12">
+        <div>
+          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">60</span>
+          <span class="block text-black text-sm mt-3">Frames per second, floor</span>
+        </div>
+        <div>
+          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">42</span>
+          <span class="block text-black text-sm mt-3">Projects shipped</span>
+        </div>
+        <div>
+          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">11</span>
+          <span class="block text-black text-sm mt-3">Countries served</span>
+        </div>
+        <div>
+          <span class="block text-black text-5xl md:text-6xl font-bold tracking-tighter tabular-nums">4.2s</span>
+          <span class="block text-black text-sm mt-3">Median deploy time</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUOTE ================= -->
+    <section class="w-full px-6 md:px-16 lg:px-32 py-32 border-t border-black/10">
+      <blockquote class="max-w-4xl">
+        <p class="text-black text-3xl md:text-5xl font-bold tracking-tighter leading-[1.15]">
+          &ldquo;They rebuilt the thing twice because the first one only <em class="not-italic underline decoration-1 underline-offset-8">looked</em> fast.&rdquo;
+        </p>
+        <footer class="mt-10 flex items-center gap-4">
+          <span class="w-12 h-px bg-black inline-block"></span>
+          <cite class="not-italic text-black text-sm">Rae Lindqvist, Head of Product at Northwind</cite>
+        </footer>
+      </blockquote>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section id="contact" class="w-full px-6 md:px-16 lg:px-32 py-32 border-t border-black/10">
+      <h2 class="text-black text-5xl md:text-8xl font-bold tracking-tighter leading-[0.95]">
+        Got something<br>worth building?
+      </h2>
+      <a href="mailto:hello@devops3d.studio"
+         class="group inline-flex items-center gap-4 mt-12 border border-black rounded-full px-8 py-4 transition-colors duration-500 hover:bg-black hover:text-white">
+        <span class="text-base font-semibold tracking-tight">Start a project</span>
+        <span class="text-lg inline-block transition-transform duration-500 group-hover:translate-x-1">&#8594;</span>
+      </a>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="w-full border-t border-black/10 pt-24 overflow-hidden">
+
+      <div class="px-6 md:px-16 lg:px-32 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-y-12 gap-x-8">
+
+        <div class="col-span-2">
+          <h3 class="text-black text-2xl font-bold tracking-tight">Stay in the loop</h3>
+          <p class="text-black text-sm leading-relaxed mt-3 max-w-sm">
+            One short letter a month &mdash; shader breakdowns, build notes, and the
+            occasional deploy that went sideways.
+          </p>
+          <form class="mt-8 flex items-center gap-3 border-b border-black pb-3 max-w-sm" onsubmit="return false;">
+            <label for="newsletter" class="sr-only">Email address</label>
+            <input id="newsletter" type="email" placeholder="you@studio.com" required
+                   class="flex-1 bg-transparent text-black text-base outline-none placeholder:text-black/40">
+            <button type="submit" aria-label="Subscribe" class="text-black text-xl transition-transform duration-500 hover:translate-x-1">&#8594;</button>
+          </form>
+        </div>
+
+        <nav aria-label="Studio">
+          <h4 class="text-black text-xs font-semibold tracking-[0.25em] uppercase">Studio</h4>
+          <ul class="mt-6 space-y-3">
+            <li><a href="#about" class="text-black text-sm hover:underline underline-offset-4">About</a></li>
+            <li><a href="#work" class="text-black text-sm hover:underline underline-offset-4">Work</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Careers</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Journal</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Services">
+          <h4 class="text-black text-xs font-semibold tracking-[0.25em] uppercase">Services</h4>
+          <ul class="mt-6 space-y-3">
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Design</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Develope</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Deploy</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Consulting</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Elsewhere">
+          <h4 class="text-black text-xs font-semibold tracking-[0.25em] uppercase">Elsewhere</h4>
+          <ul class="mt-6 space-y-3">
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">GitHub &#8599;</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Dribbble &#8599;</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">LinkedIn &#8599;</a></li>
+            <li><a href="#" class="text-black text-sm hover:underline underline-offset-4">Instagram &#8599;</a></li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <div class="px-6 md:px-16 lg:px-32 mt-20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-10">
+        <span class="text-black text-xs">&copy; 2026 DevOPs3D. All rights reserved.</span>
+        <div class="flex gap-8">
+          <a href="#" class="text-black text-xs hover:underline underline-offset-4">Privacy</a>
+          <a href="#" class="text-black text-xs hover:underline underline-offset-4">Terms</a>
+          <a href="#" class="text-black text-xs hover:underline underline-offset-4">Colophon</a>
+        </div>
+        <span class="text-black text-xs">Built with Three.js &amp; GSAP</span>
+      </div>
+
+      <!-- oversized wordmark, clipped at the baseline -->
+      <div class="w-full px-6 md:px-16 lg:px-32 select-none" aria-hidden="true">
+        <span class="footer-wordmark">DevOPs3D</span>
+      </div>
+
+    </footer>
 
   </div>
   <script type="module" src="./main.js"></script>
