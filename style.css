@@ -168,3 +168,100 @@ nav {
 .marquee--js .marquee__track {
   animation: none;
 }
+
+/* =========================================================
+   LIQUID CURTAIN — loader + section transitions
+   ========================================================= */
+
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  /* failsafe: if the JS bundle never boots, uncover the page anyway */
+  animation: pt-failsafe 0s linear 6s forwards;
+}
+
+/* JS adds this the moment it takes control, cancelling the failsafe */
+.page-transition.is-live {
+  animation: none;
+}
+
+@keyframes pt-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.page-transition__panels {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.page-transition__panel {
+  position: relative;
+  flex: 1 1 0;
+  height: 100%;
+  background-color: #000000;
+  will-change: transform;
+}
+
+/* the domed leading / trailing edges that make the curtain read as liquid */
+.page-transition__panel::before,
+.page-transition__panel::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  height: 12vh;
+  background-color: #000000;
+  border-radius: 50%;
+}
+
+.page-transition__panel::before {
+  top: 0;
+  transform: translateY(-50%);
+}
+
+.page-transition__panel::after {
+  bottom: 0;
+  transform: translateY(50%);
+}
+
+.page-transition__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  /* inverts against the panels and against the bare page in the gaps */
+  mix-blend-mode: difference;
+  color: #ffffff;
+}
+
+.page-transition__index {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  font-variant-numeric: tabular-nums;
+}
+
+.page-transition__label {
+  font-size: clamp(2rem, 7vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* reduced motion: never cover the page at all */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    display: none;
+  }
+}

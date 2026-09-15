@@ -5,7 +5,10 @@ import fragmentShader from "./shaders/fragmentShader.glsl";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-gsap.registerPlugin(ScrollTrigger, SplitText);
+import { CustomEase } from "gsap/CustomEase";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, ScrambleTextPlugin, ScrollToPlugin);
 
 /* =========================================================
    WEBGL
@@ -179,10 +182,10 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
 		}),
 	});
 
-	/* -------- intro: nav + hero headline -------- */
+	/* -------- intro: nav + hero headline (played by the loader) -------- */
 	const heroSplit = new SplitText(".landing h1", { type: "chars" });
 
-	gsap.timeline({ defaults: { ease: "power3.out" } })
+	const buildIntro = () => gsap.timeline({ defaults: { ease: "power3.out" } })
 		.from("nav h1", { yPercent: -160, opacity: 0, duration: 0.9 })
 		.from("nav a", { yPercent: -160, opacity: 0, duration: 0.8, stagger: 0.07 }, "<0.08")
 		.from(heroSplit.chars, {
@@ -367,6 +370,123 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
 		});
 	}
 
+	/* =====================================================
+	   LIQUID CURTAIN
+	   Six columns with domed leading edges sweep up in a
+	   stagger, so the edge reads as a wave rather than a
+	   flat wipe. The scroll jump happens while covered, and
+	   the curtain exits by continuing upward instead of
+	   reversing — the motion never doubles back.
+	   ===================================================== */
+
 	// SplitText measures text, so remeasure once webfonts land
 	document.fonts.ready.then(() => ScrollTrigger.refresh());
+
+	CustomEase.create("curtain", "0.76, 0, 0.24, 1");
+
+	const overlay = document.querySelector(".page-transition");
+	const panels = gsap.utils.toArray(".page-transition__panel");
+
+	// without the curtain markup, skip straight to the intro
+	if (!overlay || !panels.length) {
+		buildIntro();
+		return;
+	}
+
+	const labelEl = overlay.querySelector(".page-transition__label");
+	const indexEl = overlay.querySelector(".page-transition__index");
+	const sections = gsap.utils.toArray("section");
+
+	// cancels the CSS failsafe now that JS owns the curtain
+	overlay.classList.add("is-live");
+
+	// The domes are 12vh tall and centred on the panel edge, so 6vh of dome
+	// always overhangs. Parking at +/-100 puts the panel edge exactly on the
+	// viewport edge and leaves that overhang on screen -- hence 110.
+	const PARKED = 110;
+
+	const curtainIn = (label, position) => gsap.timeline()
+		.set(overlay, { autoAlpha: 1, pointerEvents: "auto" })
+		.set(panels, { yPercent: PARKED })
+		.set([labelEl, indexEl], { opacity: 0 })
+		.to(panels, {
+			yPercent: 0,
+			duration: 0.9,
+			ease: "curtain",
+			stagger: { each: 0.055, from: "start" },
+		})
+		.to([indexEl, labelEl], { opacity: 1, duration: 0.25 }, "-=0.5")
+		.to(indexEl, {
+			duration: 0.5,
+			scrambleText: { text: position, chars: "0123456789", speed: 0.7 },
+		}, "<")
+		.to(labelEl, {
+			duration: 0.7,
+			scrambleText: { text: label, chars: "upperCase", speed: 0.6 },
+		}, "<");
+
+	const curtainOut = () => gsap.timeline()
+		.to([labelEl, indexEl], { opacity: 0, duration: 0.3, ease: "power2.in" })
+		.to(panels, {
+			yPercent: -PARKED,
+			duration: 0.9,
+			ease: "curtain",
+			stagger: { each: 0.055, from: "end" },
+		}, "-=0.15")
+		// belt and braces: nothing of the curtain can linger between transitions
+		.set(overlay, { autoAlpha: 0, pointerEvents: "none" });
+
+	let transitioning = false;
+
+	document.querySelectorAll('a[href^="#"]').forEach((link) => {
+		const hash = link.getAttribute("href");
+		if (hash.length < 2) return;
+
+		const target = document.querySelector(hash);
+		if (!target) return;
+
+		link.addEventListener("click", (event) => {
+			event.preventDefault();
+			if (transitioning) return;
+			transitioning = true;
+
+			const index = sections.indexOf(target);
+			const position = index === -1 ? "00" : String(index + 1).padStart(2, "0");
+
+			gsap.timeline({ onComplete: () => { transitioning = false; } })
+				.add(curtainIn(link.textContent.trim(), position))
+				.add(() => {
+					gsap.set(window, { scrollTo: { y: target, autoKill: false } });
+					ScrollTrigger.refresh();
+				})
+				.to({}, { duration: 0.25 })
+				.add(curtainOut());
+		});
+	});
+
+	/* -------- first load: counter, then hand off to the intro -------- */
+	if (history.scrollRestoration) history.scrollRestoration = "manual";
+	window.scrollTo(0, 0);
+	document.documentElement.style.overflow = "hidden";
+
+	const progress = { value: 0 };
+
+	gsap.timeline({
+		onComplete: () => {
+			document.documentElement.style.overflow = "";
+			ScrollTrigger.refresh();
+		},
+	})
+		.set(overlay, { autoAlpha: 1, pointerEvents: "auto" })
+		.set(panels, { yPercent: 0 })
+		.to(progress, {
+			value: 100,
+			duration: 1.5,
+			ease: "power2.inOut",
+			onUpdate: () => {
+				indexEl.textContent = String(Math.round(progress.value)).padStart(3, "0");
+			},
+		})
+		.add(curtainOut(), "+=0.1")
+		.add(buildIntro(), "-=0.55");
 });

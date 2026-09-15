@@ -13,17 +13,34 @@
 <body>
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="cursor" aria-hidden="true"></div>
+
+  <!-- liquid curtain used for the loader + section transitions -->
+  <div class="page-transition" aria-hidden="true">
+    <div class="page-transition__panels">
+      <span class="page-transition__panel"></span>
+      <span class="page-transition__panel"></span>
+      <span class="page-transition__panel"></span>
+      <span class="page-transition__panel"></span>
+      <span class="page-transition__panel"></span>
+      <span class="page-transition__panel"></span>
+    </div>
+    <div class="page-transition__content">
+      <span class="page-transition__index">000</span>
+      <span class="page-transition__label">DEVOPS3D</span>
+    </div>
+  </div>
+
   <div class="w-full">
     <nav class="fixed top-0 left-0 z-50 w-full py-10 px-32 flex justify-between">
       <h1 class="text-4xl font-bold text-black">DevOPs3D</h1>
       <div class="flex gap-10">
-        <a href="#work" class="text-black text-xl">Home</a>
+        <a href="#top" class="text-black text-xl">Home</a>
         <a href="#about" class="text-black text-xl">About</a>
         <a href="#contact" class="text-black text-xl">Contact</a>
 
       </div>
     </nav>
-    <div class="landing w-full h-[200vh]">
+    <div id="top" class="landing w-full h-[200vh]">
 
       <div class="sticky top-0 left-0 w-full h-screen">
 
