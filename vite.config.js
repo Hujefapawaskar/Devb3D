@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import glsl from 'vite-plugin-glsl';
+import tailwindcss from '@tailwindcss/vite';
 
 // The site is published at https://hujefapawaskar.github.io/Devb3D/ , so every
 // asset URL must be prefixed with /Devb3D/ .
@@ -8,5 +9,5 @@ import glsl from 'vite-plugin-glsl';
 // HTML points at /Devb3D/ . Dev + preview now run at http://localhost:PORT/Devb3D/
 export default defineConfig({
 	base: '/Devb3D/',
-	plugins: [glsl()],
+	plugins: [glsl(), tailwindcss()],
 });
